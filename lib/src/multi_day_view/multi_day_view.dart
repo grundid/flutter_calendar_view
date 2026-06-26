@@ -298,7 +298,8 @@ class MultiDayView<T extends Object?> extends StatefulWidget {
   MultiDayViewState<T> createState() => MultiDayViewState<T>();
 }
 
-class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>> {
+class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>>
+    with WeekViewController {
   late double _width;
   late double _height;
   late double _timeLineWidth;
@@ -519,6 +520,8 @@ class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _weekHeaderBuilder(
+                context,
+                this,
                 _currentStartDate,
                 _currentEndDate,
               ),
@@ -879,6 +882,8 @@ class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>> {
   /// Default view header builder. This builder will be used if
   /// [widget.dayTitleBuilder] is null.
   Widget _defaultWeekPageHeaderBuilder(
+    BuildContext context,
+    WeekViewController controller,
     DateTime startDate,
     DateTime endDate,
   ) {

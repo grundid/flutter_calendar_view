@@ -70,6 +70,8 @@ typedef StringProvider = String Function(DateTime date,
     {DateTime? secondaryDate});
 
 typedef WeekPageHeaderBuilder = Widget Function(
+  BuildContext context,
+  WeekViewController controller,
   DateTime startDate,
   DateTime endDate,
 );

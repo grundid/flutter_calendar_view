@@ -63,7 +63,8 @@ class MonthView<T extends Object?> extends StatefulWidget {
 }
 
 /// State of month view.
-class MonthViewState<T extends Object?> extends State<MonthView<T>> {
+class MonthViewState<T extends Object?> extends State<MonthView<T>>
+    with CalendarController {
   /// Minimum date user can scroll to. Reference date for page index calculation.
   /// Stored without time component. See [_setDateRange] for calculation.
   late DateTime _minDate;
@@ -111,7 +112,7 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
   late WeekDayBuilder _weekBuilder;
 
   /// Builder function for rendering the month view header.
-  late DateWidgetBuilder _headerBuilder;
+  late DatePageWidgetBuilder _headerBuilder;
 
   /// Event controller for managing calendar events across the month.
   EventController<T>? _controller;
@@ -277,7 +278,7 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
           children: [
             SizedBox(
               width: _width,
-              child: _headerBuilder(_currentDate),
+              child: _headerBuilder(context, this, _currentDate),
             ),
             Expanded(
               child: PageView.builder(
@@ -517,7 +518,8 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
   }
 
   /// Default month view header builder
-  Widget _defaultHeaderBuilder(DateTime date) {
+  Widget _defaultHeaderBuilder(
+      BuildContext context, CalendarController controller, DateTime date) {
     return MonthPageHeader(
       showPreviousIcon: date != _minDate,
       showNextIcon: date != _maxDate,
@@ -534,13 +536,13 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
           );
 
           if (selectedDate == null) return;
-          jumpToMonth(selectedDate);
+          controller.jumpTo(selectedDate);
         }
       },
-      onPreviousMonth: previousPage,
+      onPreviousMonth: controller.previousPage,
       date: date,
       dateStringBuilder: _monthViewBuilders.headerStringBuilder,
-      onNextMonth: nextPage,
+      onNextMonth: controller.nextPage,
       headerStyle: _monthViewThemeSettings.headerStyle ??
           HeaderStyle(
             decoration: BoxDecoration(
@@ -745,6 +747,10 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
   ///
   /// See also: [currentDate], [jumpToMonth]
   int get currentPage => _currentIndex;
+
+  void jumpTo(DateTime month) {
+    jumpToMonth(month);
+  }
 
   /// Jumps to page which gives month calendar for [month]
   void jumpToMonth(DateTime month) {

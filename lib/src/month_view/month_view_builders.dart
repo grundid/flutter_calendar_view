@@ -58,7 +58,7 @@ class MonthViewBuilders<T extends Object?> {
   /// [WeekPageHeader] widgets provided by this package with your custom
   /// configurations.
   ///
-  final DateWidgetBuilder? headerBuilder;
+  final DatePageWidgetBuilder? headerBuilder;
 
   /// This function will generate DateString in the calendar header.
   /// Useful for I18n

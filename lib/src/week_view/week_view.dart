@@ -343,7 +343,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
 }
 
 class WeekViewState<T extends Object?> extends State<WeekView<T>>
-    with WeekViewController {
+    with CalendarController {
   /// Width of the Week View widget in pixels.
   late double _width;
 
@@ -997,7 +997,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>>
 
   /// Default week page header builder (used if [widget.dayTitleBuilder] is null).
   Widget _defaultWeekPageHeaderBuilder(BuildContext context,
-      WeekViewController controller, DateTime startDate, DateTime endDate) {
+      CalendarController controller, DateTime startDate, DateTime endDate) {
     return WeekPageHeader(
       startDate: _currentStartDate,
       endDate: _currentEndDate,
@@ -1018,7 +1018,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>>
           );
 
           if (selectedDate == null) return;
-          controller.jumpToWeek(selectedDate);
+          controller.jumpTo(selectedDate);
         }
       },
       headerStringBuilder: widget.headerStringBuilder,
@@ -1138,6 +1138,11 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>>
   /// Use [currentDate] to get the week's first date.
   int get currentPage => _currentIndex;
 
+  @override
+  void jumpTo(DateTime date) {
+    jumpToWeek(date);
+  }
+
   /// Jumps to page which gives day calendar for [week]
   void jumpToWeek(DateTime week) {
     if (week.isBefore(_minDate) || week.isAfter(_maxDate)) {
@@ -1232,8 +1237,8 @@ class WeekHeader {
   static Widget hidden(DateTime date, DateTime date1) => SizedBox.shrink();
 }
 
-mixin WeekViewController {
+mixin CalendarController {
   void nextPage({Duration? duration, Curve? curve});
   void previousPage({Duration? duration, Curve? curve});
-  void jumpToWeek(DateTime week);
+  void jumpTo(DateTime date);
 }

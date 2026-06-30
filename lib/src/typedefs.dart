@@ -50,6 +50,9 @@ typedef WeekDayBuilder = Widget Function(
 
 typedef DateWidgetBuilder = Widget Function(DateTime date);
 
+typedef DatePageWidgetBuilder = Widget Function(
+    BuildContext context, CalendarController controller, DateTime date);
+
 typedef HeaderTitleCallback = Future<void> Function(DateTime date);
 
 typedef WeekNumberBuilder = Widget? Function(
@@ -71,7 +74,7 @@ typedef StringProvider = String Function(DateTime date,
 
 typedef WeekPageHeaderBuilder = Widget Function(
   BuildContext context,
-  WeekViewController controller,
+  CalendarController controller,
   DateTime startDate,
   DateTime endDate,
 );

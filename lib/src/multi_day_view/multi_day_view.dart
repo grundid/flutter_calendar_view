@@ -299,7 +299,7 @@ class MultiDayView<T extends Object?> extends StatefulWidget {
 }
 
 class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>>
-    with WeekViewController {
+    with CalendarController {
   late double _width;
   late double _height;
   late double _timeLineWidth;
@@ -883,7 +883,7 @@ class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>>
   /// [widget.dayTitleBuilder] is null.
   Widget _defaultWeekPageHeaderBuilder(
     BuildContext context,
-    WeekViewController controller,
+    CalendarController controller,
     DateTime startDate,
     DateTime endDate,
   ) {
@@ -891,9 +891,9 @@ class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>>
     return WeekPageHeader(
       startDate: _currentStartDate,
       endDate: _currentEndDate,
-      onNextDay: nextPage,
+      onNextDay: controller.nextPage,
       showNextIcon: endDate != _maxDate,
-      onPreviousDay: previousPage,
+      onPreviousDay: controller.previousPage,
       showPreviousIcon: startDate != _minDate,
       onTitleTapped: () async {
         if (widget.onHeaderTitleTap != null) {
@@ -908,7 +908,7 @@ class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>>
           );
 
           if (selectedDate == null) return;
-          jumpToWeek(selectedDate);
+          controller.jumpTo(selectedDate);
         }
       },
       headerStringBuilder: widget.headerStringBuilder,
@@ -1038,6 +1038,10 @@ class MultiDayViewState<T extends Object?> extends State<MultiDayView<T>>
   ///
   /// See also: [currentDate], [jumpToWeek]
   int get currentPage => _currentIndex;
+
+  void jumpTo(DateTime week) {
+    jumpToWeek(week);
+  }
 
   /// Jumps to page which gives day calendar for [week]
   void jumpToWeek(DateTime week) {
